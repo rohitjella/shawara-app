@@ -1,23 +1,21 @@
 <template>
   <v-col cols="12" md="8">
     <v-card-text class="mt-12">
-      <h1 class="display-1 text-center teal--text text--accent-3 mb-5">
+      <h1 class="text-center teal--text text--accent-3 mb-5">
         Welcome Back to Shawara.
       </h1>
-      <v-alert dense outlined text type="error" v-if="error" class="mx-16">
-        {{ this.$store.state.error }}
-      </v-alert>
-
+      <!-- <div class="text-center mt-4">
+            <v-btn class="mx-2" fab color="primary" outlined>
+            <v-icon> fab fa-facebook-f </v-icon>
+            </v-btn>
+            <v-btn class="mx-2" fab color="red" outlined>
+            <v-icon> fab fa-google </v-icon>
+            </v-btn>
+            <v-btn class="mx-2" fab color="info" outlined>
+            <v-icon> fab fa-linkedin-in </v-icon>
+            </v-btn>
+        </div> -->
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field
-          label="Full Name"
-          name="name"
-          prepend-icon="mdi-account"
-          type="text"
-          color="teal accent-3"
-          v-model="name"
-          :rules="nameRules"
-        />
         <v-text-field
           label="Email"
           name="Email"
@@ -46,24 +44,24 @@
             color="teal accent-3"
             dark
             type="submit"
-            @click="join()"
+            @click="login"
           >
-            Join
+            sign in
           </v-btn>
         </div>
       </v-form>
+      <h3 class="text-center mt-3">Forgot your password</h3>
     </v-card-text>
   </v-col>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data: () => ({
-    error: "",
     step: 1,
     valid: true,
-    name: "",
-    nameRules: [(v) => !!v || "Name is required"],
     email: "",
     emailRules: [
       (v) => !!v || "E-mail is required",
@@ -77,16 +75,9 @@ export default {
     },
   }),
   methods: {
-    async join(e) {
-      const valid = this.$refs.form.validate();
+    login(e) {
+      this.$refs.form.validate();
       e.preventDefault();
-      if (valid) {
-        this.$store.dispatch("join", {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-        });
-      }
     },
   },
 };
